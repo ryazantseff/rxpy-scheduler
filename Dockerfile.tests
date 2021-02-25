@@ -1,0 +1,6 @@
+FROM python:3.9-buster
+LABEL maintainer="Maxim Ryazantsev <maxim.ryazancev@gmail.com>"
+
+RUN apt-get update \
+    && apt-get install -y libldap2-dev libsasl2-dev libkrb5-dev wait-for-it\
+    && pip3.9 install asyncio rx

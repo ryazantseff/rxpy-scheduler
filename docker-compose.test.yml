@@ -1,0 +1,11 @@
+version: '3'
+services:
+  tests:
+    build: 
+      context: ./
+      dockerfile: Dockerfile.tests
+    working_dir: /root
+    volumes:
+      - ./tests:/root/tests
+      - ./rx_scheduler:/root/rx_scheduler
+    command: bash -c "python3.9 -m unittest -v tests"
