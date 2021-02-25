@@ -1,5 +1,6 @@
 import asyncio, logging, unittest
-from rx_scheduler import Scheduler, Task
+from rx_scheduler import Scheduler
+from functools import partial
 
 class RxSchedulerTest(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
@@ -65,8 +66,8 @@ class RxSchedulerTest(unittest.IsolatedAsyncioTestCase):
 
 
     async def test_async(self):
-        async def async_fn():
-            await asyncio.sleep(0.5)
+        async def async_fn(interval):
+            await asyncio.sleep(interval)
             logging.debug('async task output')
 
         loop = asyncio.get_event_loop()
@@ -89,7 +90,7 @@ class RxSchedulerTest(unittest.IsolatedAsyncioTestCase):
         )
 
         scheduler.addTask(
-            async_fn,
+            partial(async_fn, 0.5),
             name = 'asyncTask',
             interval = 1
         )
@@ -100,7 +101,7 @@ class RxSchedulerTest(unittest.IsolatedAsyncioTestCase):
             AttributeError,
             'Task "asyncTask" is defined already',
             lambda: scheduler.addTask(
-                async_fn,
+                partial(async_fn, 0.5),
                 name = 'asyncTask',
                 interval = 1
             )
